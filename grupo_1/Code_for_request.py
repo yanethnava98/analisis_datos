@@ -124,3 +124,41 @@ else:
     archivo_excel = f"generacion_{region_name.replace(' ', '_').lower()}_{start_str}_{end_str}.xlsx"
     df.to_excel(archivo_excel, index=False)
     print(f"✅ Data saved to: {archivo_excel}")
+
+#GRAPHS
+    # It goes from 01 to 23h by month. Check the range of dates available in the API
+    df["date"] = pd.to_datetime(df["datetime"]).dt.date
+
+    pivot_df = df.pivot_table(
+        index="date",
+        columns="technology",
+        values="value",
+        aggfunc="sum",
+        fill_value=0
+    )
+
+    pivot_df.plot(
+        kind="bar",
+        stacked=True,
+        figsize=(12, 6),
+        title=f"Daily generation by technology in Spain",
+    )
+
+    plt.xlabel("Date")
+    plt.ylabel("Generation (MWh)")
+    plt.xticks(rotation=45)
+    plt.legend(title="Technology")
+    plt.tight_layout()
+    plt.show()
+    
+
+
+
+
+
+
+
+
+
+
+
